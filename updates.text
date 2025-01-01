@@ -1,0 +1,26 @@
+Updates and thoughts
+---------------------------------------------------------------------
+Day 1: 1/1/2025
+Goals
+-Code everyday for fun first project of 2025
+-Starting light to slowly acclimate myself into programming for fun
+
+Motivations
+-Always wanted to learn pygame 
+-There are probably other people, who did this project better than me
+-I will jump into pygame blind using documentation
+
+What did I do?
+-Created the repo
+-Started Learning about pygame
+-Mostly exploratory looking through documentation
+
+What did I learn?
+At a high level, Pygame has something called a display surface, which is essentially an image
+The image is made up of pixels, where the developer will change these pixels like an image
+We update the Image with blit() function to copy a pixel from one image onto another
+TLDR: We are rapidly updating the images on the surface to have the illusion of motion
+
+Thoughts:
+I think I will spend more time tomorrow, for now I am slowly acclimated myself for a day 1
+
