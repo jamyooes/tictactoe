@@ -1,5 +1,23 @@
 Updates and thoughts
 ---------------------------------------------------------------------
+Day 2: 1/2/2025
+What did I do?
+-Follow the pytorch documentation 
+
+What did I learn?
+-Pygame uses Rect as the container for coordinates. Typically used in functions. One 
+common utility is that the function will look at the "top-left" coordinate for the Rect
+Can also provide a tuple of size 4 with left, top, width, and height.
+-blit has a parameter to use a subsection of the background
+-After drawing on screen call pygame.display.update()
+-Have a clock to limit the fps or else animations will not be screen
+-load images and do convert to have the same pixel format as the display (this will allow blit to be faster)
+-Creating a screen
+-Event handling
+
+Thoughts?
+I was actually very focused and had fun during implementation. Very fun to map out this problem
+---------------------------------------------------------------------
 Day 1: 1/1/2025
 Goals
 -Code everyday for fun first project of 2025
