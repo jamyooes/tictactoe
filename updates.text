@@ -1,8 +1,20 @@
 Updates and thoughts
 ---------------------------------------------------------------------
+Day 3: 1/3/2025
+What did I do?
+I implemented more logic like drawing for each player and updating state 
+I had some bare bone plans for the game rendering process
+
+Thoughts?
+I felt like I overly complicated the implementation during the design...
+Maybe I couldve represented everything in quadrants as opposed to doing exact coordinates of 180
+I spent a lot of time thinking for a solution than implementation 
+I think I will spend time tomorrow on game logic 
+---------------------------------------------------------------------
 Day 2: 1/2/2025
 What did I do?
--Follow the pytorch documentation 
+-Follow the pytorch documentation
+-Implemented the tictactoe board and mapped out the logic for plotting X and O's
 
 What did I learn?
 -Pygame uses Rect as the container for coordinates. Typically used in functions. One 
