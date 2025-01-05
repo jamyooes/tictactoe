@@ -15,6 +15,8 @@ line_axis_2 = [0, 540]
 rounds = 0
 # Move this into class initalization 
 game_state_list = [[0]*3, [0]*3, [0]*3]
+player_x = [[0]*3, [0]*3, [0]*3]
+player_y = [[0]*3, [0]*3, [0]*3]
 
 def calc_pos(pos):
     """
@@ -103,7 +105,62 @@ def draw_on_board(game_state, rounds, mouse_pos, surface, round):
     
     update_game_state(game_state, top_left, bottom_right)
     
+    calculate_outcome(game_state)
+    
     pass
+
+def calculate_outcome(game_state, top_left):
+    """
+    Function to calculate the game outcome
+    A player can win or lose or tie
+    Hard coded
+    *** Need to add who won in the return
+    
+    Arguments:
+    game_state (list) - List representation of board
+    top_left (tuple) - integer tuple representing top left coordinates of the quadrant the user clicked on
+    
+    Return:
+    True - if the game is a win for one of the players
+    False - if the game is a tie
+    """
+    quad_x = top_left[0] // 180
+    quad_y = top_left[1] // 180
+    
+    # Check the horizonals
+    if quad_x == 0:
+        if game_state[quad_x][quad_y] == game_state[quad_x + 1][quad_y] == game_state[quad_x + 2][quad_y]:
+            return True
+    elif quad_x == 1:
+        if game_state[quad_x - 1][quad_y] == game_state[quad_x][quad_y] == game_state[quad_x + 1][quad_y]:
+            return True
+    else:
+        if game_state[quad_x - 2][quad_y] == game_state[quad_x - 1][quad_y] == game_state[quad_x][quad_y]:
+            return True
+    
+    # Check vertical    
+    if quad_y == 0:
+        if game_state[quad_x][quad_y] == game_state[quad_x][quad_y + 1] == game_state[quad_x][quad_y + 2]:
+            return True
+    elif quad_y == 1:
+        if game_state[quad_x][quad_y - 1] == game_state[quad_x][quad_y] == game_state[quad_x][quad_y + 1]:
+            return True
+    else:
+        if game_state[quad_x][quad_y - 2] == game_state[quad_x][quad_y - 1] == game_state[quad_x][quad_y]:
+            return True
+    
+    # In the case of corners or center need to check diagonals otherwise there are no other outcomes
+    if quad_x == 1 and quad_y == 1:
+        if game_state[quad_x][quad_y] == game_state[quad_x - 1][quad_y - 1] == game_state[quad_x + 1][quad_y + 1]:
+            return True
+        elif game_state[quad_x][quad_y] == game_state[quad_x + 1][quad_y - 1] == game_state[quad_x - 1][quad_y + 1]: 
+            return True
+    elif (quad_x + quad_y) % 2 == 0 and game_state[quad_x][quad_y] == game_state[1][1] == game_state[2 - quad_x][2 - quad_y]:
+        return True
+        
+    if rounds == 8:
+        return False
+    return None
 
 def update_game_state(game_state, top_left, rounds):
     """
