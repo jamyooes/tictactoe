@@ -9,10 +9,11 @@ class Board():
         self.bot_right = None
         self.tie = None
         self.win = None
-        self.render = []
+        self.render_x = []
+        self.render_y = []
         self.surface = surface
     
-    def draw_on_board(self, mouse_pos, surface):
+    def draw_on_board(self, mouse_pos):
         """
         The purpose of this function is drawing player symbols on the board
         
@@ -42,9 +43,7 @@ class Board():
         # if not a valid_move then break out of this function
         if not self.legal:
             return
-        
-        self.player_moves()
-        
+                
         self.plot_player()
         
         # Update the game state array
@@ -53,13 +52,7 @@ class Board():
         # Check if the game is over
         self.calculate_outcome()
         
-        # Handle cases for game over?
-        # if True:
-        #     pass
-        # if False:
-        #     pass
-        
-        # rounds function incrementation figure this out later
+        # Turn is over
         self.rounds += 1
         
     
@@ -82,8 +75,10 @@ class Board():
         y_min_val, y_max_val = self.calc_min_max(y)
 
         # print((x_min_val, y_min_val), (x_max_val, y_max_val))
+        print(self.top_left, self.bot_right)
         self.top_left = (x_min_val, y_min_val)
         self.bot_right = (x_max_val, y_max_val)
+        print(self.top_left, self.bot_right)
     
     def calc_min_max(self, val):
         """
@@ -121,36 +116,30 @@ class Board():
         An "illegal" move is placing an O or X on an occupied square
         Updates legal attribute to True, if the move is legal and False if the move is illegal
         """
-        if self.game_state[self.top_left[0] // 180][self.top_left[1] // 180] != 0:
+        if self.game_state[self.top_left[1] // 180][self.top_left[0] // 180] != 0:
             self.legal = False 
         else:
             self.legal = True
-    
-    def player_moves(self):
-        """
-        Function that will contain all the moves from the player to aid with plotting
-        Handle 0's and 1's in the saving into the list and  save the values from plot_player
-        """
-        if self.legal and self.top_left is not None:
-            pass
-    
+       
     def plot_player(self):
         """
-        Function handling drawing the player symbols
-        
-        Arguments:
-        surface (surface)- object that is used to display the game
+        Function handling coordinates for the player symbols during rendering
         """
         if self.legal and self.top_left is not None:
             # If the number of rounds is even, then draw 2 diagonal lines
             if self.rounds % 2 == 0:
-                self.render.append(pygame.draw.lines(self.surface, (255, 0, 0), True, [self.top_left, self.bot_right], 5))
+                # pygame.draw.lines(self.surface, (255, 0, 0), True, [self.top_left, self.bot_right], 5)
+                self.render_x.append([self.top_left, self.bot_right])
                 # We can find the upper right and bottom left by simply adding and subtracting 180 from the bottom right and upper left respectively
-                self.render.append(pygame.draw.lines(self.surface, (255, 0, 0), True, [(self.top_left[0], self.top_left[1] + 180), (self.bot_right[0], self.bot_right[1] - 180)], 5))
+                self.render_x.append([(self.top_left[0], self.top_left[1] + 180), (self.bot_right[0], self.bot_right[1] - 180)])
+                # pygame.draw.lines(self.surface, (255, 0, 0), True, [(self.top_left[0], self.top_left[1] + 180), (self.bot_right[0], self.bot_right[1] - 180)], 5)
             else:
                 # Circle center is the midpoint of the top left and bottom right
-                circle_center = (self.top_left[0] + self.bot_right[0]) // 2
-                self.render.append(pygame.draw.circle(self.surface, (0, 0, 255), [circle_center, circle_center], 90, 5))
+                circle_center_x = (self.top_left[0] + self.bot_right[0]) // 2
+                circle_center_y = (self.top_left[1] + self.bot_right[1]) // 2
+                self.render_y.append([circle_center_x, circle_center_y])
+                print(circle_center_x, circle_center_y)
+                # self.render.append(pygame.draw.circle(self.surface, (0, 0, 255), [circle_center, circle_center], 90, 5))
     
     def update_game_state(self):
         """
@@ -161,9 +150,11 @@ class Board():
         2 -> O
         """
         if self.rounds % 2 == 0:
-            self.game_state[self.top_left[0] // 180][self.top_left[1] // 180] = 1
+            self.game_state[self.top_left[1] // 180][self.top_left[0] // 180] = 1 
         else:
-            self.game_state[self.top_left[0] // 180][self.top_left[1] // 180] = 2
+            self.game_state[self.top_left[1] // 180][self.top_left[0] // 180] = 2
+        print(self.game_state)
+        print(self.rounds)
 
     def calculate_outcome(self):
         """
@@ -176,38 +167,38 @@ class Board():
         True - if the game is a win for one of the players
         False - if the game is a tie
         """
-        quad_x = self.top_left[0] // 180
-        quad_y = self.top_left[1] // 180
+        quad_y = self.top_left[0] // 180
+        quad_x = self.top_left[1] // 180
         
         # Check the horizonals
         if quad_x == 0:
-            if self.game_state[quad_x][quad_y] == self.game_state[quad_x + 1][quad_y] == self.game_state[quad_x + 2][quad_y]:
+            if self.game_state[quad_x][quad_y] == self.game_state[quad_x + 1][quad_y] == self.game_state[quad_x + 2][quad_y] != 0:
                 self.win = True
         elif quad_x == 1:
-            if self.game_state[quad_x - 1][quad_y] == self.game_state[quad_x][quad_y] == self.game_state[quad_x + 1][quad_y]:
+            if self.game_state[quad_x - 1][quad_y] == self.game_state[quad_x][quad_y] == self.game_state[quad_x + 1][quad_y] != 0:
                 self.win = True
         else:
-            if self.game_state[quad_x - 2][quad_y] == self.game_state[quad_x - 1][quad_y] == self.game_state[quad_x][quad_y]:
+            if self.game_state[quad_x - 2][quad_y] == self.game_state[quad_x - 1][quad_y] == self.game_state[quad_x][quad_y] != 0:
                 self.win = True
         
         # Check vertical    
         if quad_y == 0:
-            if self.game_state[quad_x][quad_y] == self.game_state[quad_x][quad_y + 1] == self.game_state[quad_x][quad_y + 2]:
+            if self.game_state[quad_x][quad_y] == self.game_state[quad_x][quad_y + 1] == self.game_state[quad_x][quad_y + 2] != 0:
                 self.win = True
         elif quad_y == 1:
-            if self.game_state[quad_x][quad_y - 1] == self.game_state[quad_x][quad_y] == self.game_state[quad_x][quad_y + 1]:
+            if self.game_state[quad_x][quad_y - 1] == self.game_state[quad_x][quad_y] == self.game_state[quad_x][quad_y + 1] != 0:
                 self.win = True
         else:
-            if self.game_state[quad_x][quad_y - 2] == self.game_state[quad_x][quad_y - 1] == self.game_state[quad_x][quad_y]:
+            if self.game_state[quad_x][quad_y - 2] == self.game_state[quad_x][quad_y - 1] == self.game_state[quad_x][quad_y] != 0:
                 self.win = True
         
         # In the case of corners or center need to check diagonals otherwise there are no other outcomes
         if quad_x == 1 and quad_y == 1:
-            if self.game_state[quad_x][quad_y] == self.game_state[quad_x - 1][quad_y - 1] == self.game_state[quad_x + 1][quad_y + 1]:
+            if self.game_state[quad_x][quad_y] == self.game_state[quad_x - 1][quad_y - 1] == self.game_state[quad_x + 1][quad_y + 1] != 0:
                 self.win = True
-            elif self.game_state[quad_x][quad_y] == self.game_state[quad_x + 1][quad_y - 1] == self.game_state[quad_x - 1][quad_y + 1]: 
+            elif self.game_state[quad_x][quad_y] == self.game_state[quad_x + 1][quad_y - 1] == self.game_state[quad_x - 1][quad_y + 1] != 0: 
                 self.win = True
-        elif (quad_x + quad_y) % 2 == 0 and self.game_state[quad_x][quad_y] == self.game_state[1][1] == self.game_state[2 - quad_x][2 - quad_y]:
+        elif (quad_x + quad_y) % 2 == 0 and self.game_state[quad_x][quad_y] == self.game_state[1][1] == self.game_state[2 - quad_x][2 - quad_y] != 0:
             self.win = True
         
         # If the game is a draw 9 rounds

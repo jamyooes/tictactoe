@@ -1,5 +1,33 @@
 Updates and thoughts
 ---------------------------------------------------------------------
+Day 6: 1/6/2025
+What did I do?
+There are two issues. One is that the rendering is being messed up because of the logic
+The second problem is that the game state is being updated incorrectly
+The resolution is that I forgot to take the average of the y coordinate as well
+
+Another issue when checking over gamestate is that it was being printed strangely
+The issue was that the x and y coordinates need to be flipped. 
+The reason is that the way people view x and y coordinates is x and y 
+However for array or list based representations, we would view the rows as the columns and columns as the rows
+
+Thoughts?
+I think I debugged the issues above well.
+Next steps I would need to work on a game over and then a restart game state 
+I think I only have a few more things left to implement, I believe that I have some ideas when I come revisit this project
+
+TODOs for 1/7 and onwards?:
+Work on game over case - stop user inputs or a screen 
+Similar case for draw 
+print out the result of the game onto the screen 
+
+Optimizations:
+I think some additional features that can make the game slightly better are:
+AI (not implemented) and human option (current) and traditional AI (programmed rules - I don't think i will do this maybe for fun to train the AI) 
+Score UI
+Choose to go first or second?
+Timer?
+---------------------------------------------------------------------
 Day 5: 1/5/2025
 What did I do?
 Reorganize code into Class
