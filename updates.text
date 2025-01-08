@@ -1,5 +1,23 @@
 Updates and thoughts
 ---------------------------------------------------------------------
+Day 7: 1/7/2025
+What did I do?
+I wrapped up the primary goals for this project
+-Hanlde wins and tie cases:
+    -End screen in these cases
+        -Option to quit the client
+        -Option to restart the game
+    -Added a case where the logic only works if the game is not a win/tie
+    -Same idea for rendering the board - only render if the game is not decided
+-From the class perspective I added logic to reset the game and identify the winner based on the number of rounds and game state
+
+Thoughts?
+I think I made the architecture of this project overly complicated. 
+There are definitely significantly better approaches.
+I had fun solving this problem
+I will revist this problem in a later date with the optimization ideas below. 
+At some point in the farther future from the optimization, maybe I reorganize the code completely.
+---------------------------------------------------------------------
 Day 6: 1/6/2025
 What did I do?
 There are two issues. One is that the rendering is being messed up because of the logic

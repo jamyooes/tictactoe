@@ -1,7 +1,6 @@
-import pygame
 # Board Class to set up the tic-tac-toe board
 class Board():
-    def __init__(self, surface):
+    def __init__(self):
         self.game_state = [[0]*3, [0]*3, [0]*3]
         self.rounds = 0
         self.legal = True
@@ -11,7 +10,7 @@ class Board():
         self.win = None
         self.render_x = []
         self.render_y = []
-        self.surface = surface
+        self.winner = ""
     
     def draw_on_board(self, mouse_pos):
         """
@@ -201,6 +200,32 @@ class Board():
         elif (quad_x + quad_y) % 2 == 0 and self.game_state[quad_x][quad_y] == self.game_state[1][1] == self.game_state[2 - quad_x][2 - quad_y] != 0:
             self.win = True
         
+        if self.win == True:
+            self.identify_winner()
+
         # If the game is a draw 9 rounds
         if self.rounds == 8:
             self.tie = True
+
+    def reset_game(self):
+        """
+        Function to reset the game state if the player wants to play again
+        """
+        self.game_state = [[0]*3, [0]*3, [0]*3]
+        self.rounds = 0
+        self.legal = True
+        self.top_left = None
+        self.bot_right = None
+        self.tie = None
+        self.win = None
+        self.render_x = []
+        self.render_y = []
+    
+    def identify_winner(self):
+        """
+        Useful function to identify the winner
+        """
+        if self.rounds % 2 == 0:
+            self.winner = "X"
+        else:
+            self.winner = "O"
